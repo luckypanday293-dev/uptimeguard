@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: uptimeguard-postgres
+    environment:
+      POSTGRES_DB: uptimeguard
+      POSTGRES_USER: uptimeguard
+      POSTGRES_PASSWORD: uptimeguard
+    ports:
+      - "5433:5432"
+    volumes:
+      - uptimeguard_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uptimeguard -d uptimeguard"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  uptimeguard_pgdata:
